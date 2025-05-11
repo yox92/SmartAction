@@ -1,13 +1,6 @@
 # SmartAction – Adaptive Healing & Surgery QoL mod for SPT‑AKI
-
-SmartAction is a mod for Escape from Tarkov SPT-AKI. It enhances the medical gameplay loop by making the healing, surgery, and food drink smarter and faster. It allows you to adjust the speed of medical items, surgeries, food, and water consumption based on your current movement state (Idle / Walk / Sprint).
-
----
-# TimeStretch Mod for Escape From Tarkov (SPT-AKI)
-
 ## Description
-
-TimeStretch is a powerful mod for Escape From Tarkov (SPT-AKI) that enhances medical item interactions. It provides dynamic adjustments to healing speed based on movement, auto-completion of healed limbs, and quick surgical cancellations.
+SmartAction is a mod for Escape from Tarkov SPT-AKI. It enhances the medical gameplay loop by making the healing, surgery, and food drink smarter and faster. It allows you to adjust the speed of medical items, surgeries, food, and water consumption based on your current movement state (Idle / Walk / Sprint).
 
 ---
 
