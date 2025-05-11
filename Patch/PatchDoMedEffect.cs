@@ -85,7 +85,7 @@ namespace SmartAction.Patch
             }
             else
             {
-                SmartActionLogger.Log($"[DoMedEffect] ℹ️ HpResourceRate = {hpResourceRate}");
+                SmartActionLogger.Log($"[DoMedEffect] HpResourceRate = {hpResourceRate}");
             }
 
             Start(__instance.Player, bodyPart);
@@ -129,7 +129,7 @@ namespace SmartAction.Patch
             }
 
             SmartActionLogger.Log(
-                $"[DoMedEffect] monitoring end - Durée totale: {Time.realtimeSinceStartup - _monitorStartTime}s");
+                $"[DoMedEffect] monitoring end : {Time.realtimeSinceStartup - _monitorStartTime}s");
             _monitorCoroutine = null;
         }
 
@@ -142,7 +142,7 @@ namespace SmartAction.Patch
                 if (workTimeField != null)
                 {
                     workTimeField.SetValue(effect, 0f);
-                    SmartActionLogger.Log($"[DoMedEffect] float_12 forcé à 0");
+                    SmartActionLogger.Log($"[DoMedEffect] float_12 to 0");
                     break;
                 }
 

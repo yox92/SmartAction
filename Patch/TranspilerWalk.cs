@@ -58,7 +58,7 @@ namespace SmartAction.Patch
             code[i + 1] = new CodeInstruction(OpCodes.Ret);
             for (var j = 2; j <= 5; j++)
                 code[i + j] = new CodeInstruction(OpCodes.Nop);
-            SmartActionLogger.Info($"[CanWalkTranspiler] Bloc {condition} neutralisé : return true injecté.");
+            SmartActionLogger.Info($"[CanWalkTranspiler] 🛑 Bloc {condition} neutralise");
         }
 
         return code;

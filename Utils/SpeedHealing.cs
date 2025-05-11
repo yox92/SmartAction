@@ -75,7 +75,7 @@ public abstract class SpeedHealing
         }
 
         SmartActionLogger.Log(
-            $"[ManualUpdate] ⚙️ Ajustement pour {item.Template._name} [State={currentEffectState}, Move={movementState}]");
+            $"[ManualUpdate] ⚙️ Adjusting {item.Template._name} [State={currentEffectState}, Move={movementState}]");
     }
 
     private static void AdjustHealingAnimationSpeed(EPlayerState state, FirearmsAnimator anim)
@@ -88,12 +88,12 @@ public abstract class SpeedHealing
             case EPlayerState.Transition:
                 anim.SetAnimationSpeed(ConvertSpeedToFloat(Plugin.IdleSpeed.Value));
                 SmartActionLogger.Log(
-                    $"[ManualUpdate] 🎞️ Vitesse animation = {ConvertSpeedToFloat(Plugin.IdleSpeed.Value)} (stationary)");
+                    $"[ManualUpdate] 🎞️ animation speed = {ConvertSpeedToFloat(Plugin.IdleSpeed.Value)} (stationary)");
                 break;
             case EPlayerState.Sprint:
                 anim.SetAnimationSpeed(ConvertSpeedToFloat(Plugin.SprintSpeed.Value));
                 SmartActionLogger.Log(
-                    $"[ManualUpdate] 🎞️ Vitesse animation = {ConvertSpeedToFloat(Plugin.SprintSpeed.Value)} (sprint)");
+                    $"[ManualUpdate] 🎞️ animation speed = {ConvertSpeedToFloat(Plugin.SprintSpeed.Value)} (sprint)");
                 break;
             case EPlayerState.ProneMove:
             case EPlayerState.Run:
@@ -129,7 +129,7 @@ public abstract class SpeedHealing
             default:
                 anim.SetAnimationSpeed(ConvertSpeedToFloat(Plugin.WalkSpeed.Value));
                 SmartActionLogger.Log(
-                    $"[ManualUpdate] 🎞️ Vitesse animation = {ConvertSpeedToFloat(Plugin.WalkSpeed.Value)} (par défaut)");
+                    $"[ManualUpdate] 🎞️ animation speed  = {ConvertSpeedToFloat(Plugin.WalkSpeed.Value)} (défaut)");
                 break;
         }
     }

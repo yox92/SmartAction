@@ -38,7 +38,7 @@ namespace SmartAction.Patch
             if (medsItem != PatchDoMedEffect.LastHealingItem)
                 return;
             SetActiveParamInterceptor.BlockSetActiveParam = false;
-            SmartActionLogger.Log("[method_9] 🚀 End healing cycle! 🔓 reset SetActiveParam method_8.");
+            SmartActionLogger.Log("[method_9] 🚀 End healing cycle! 🔓 reset SetActiveParam method_8");
         }
     }
 }

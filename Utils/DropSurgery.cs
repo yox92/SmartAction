@@ -26,7 +26,7 @@ public abstract class DropSurgery
             // 🛡️ 
             if (_inputLocked)
             {
-                SmartActionLogger.Log("[CutAnimation-Mono] 🔒 Input verrouillé → annulation ignorée");
+                SmartActionLogger.Log("[CutAnimation-Mono] 🔒 Input lock");
                 return;
             }
 
@@ -41,7 +41,7 @@ public abstract class DropSurgery
             _inputLocked = true;
 
             TryCancelHandsController(hands, item, player);
-            SmartActionLogger.Log("[CutAnimation-Mono] ✂️ Double clic détecté → annulation tentative");
+            SmartActionLogger.Log("[CutAnimation-Mono] ✂️ Double clic");
         }
         else
         {
