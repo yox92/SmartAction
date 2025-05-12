@@ -8,8 +8,9 @@ namespace SmartAction.Utils
     public abstract class LoopTime
     {
         public static float OriginalLoopTime { get; private set; }
-        private static FieldInfo LoopTimeField;
+        private static FieldInfo _loopTimeField;
         private static bool _isInitialized = false;
+        private static object _medEffectInstance;
 
         public static void Initialize()
         {
@@ -23,7 +24,6 @@ namespace SmartAction.Utils
 
             try
             {
-                // Get LoopTime field by reflection
                 var gclass2823Property = AccessTools.Property(typeof(ActiveHealthController.GClass2813), "GClass2823_0");
                 if (gclass2823Property == null)
                 {
@@ -41,33 +41,37 @@ namespace SmartAction.Utils
                 var medEffectField = AccessTools.Field(gclass2823Instance.GetType(), "MedEffect");
                 if (medEffectField == null)
                 {
-                    SmartActionLogger.Error("[LoopTime] Could not find MedEffect");
+                    SmartActionLogger.Error("❌ [LoopTime] Could not find MedEffect");
                     return;
                 }
 
-                var medEffectInstance = medEffectField.GetValue(gclass2823Instance);
-                if (medEffectInstance == null)
+                _medEffectInstance = medEffectField.GetValue(gclass2823Instance);
+                if (_medEffectInstance == null)
                 {
-                    SmartActionLogger.Error("[LoopTime] Could not get MedEffect instance");
+                    SmartActionLogger.Error("❌ [LoopTime] Could not get MedEffect instance");
                     return;
                 }
 
-                LoopTimeField = AccessTools.Field(medEffectInstance.GetType(), "LoopTime");
-                if (LoopTimeField == null)
+                _loopTimeField = ReflectionUtils.GetOrCacheField(_medEffectInstance.GetType(), "LoopTime");
+                if (_loopTimeField == null)
                 {
-                    SmartActionLogger.Error("[LoopTime] Could not find LoopTime");
-                    return;
+                    _loopTimeField = AccessTools.Field(_medEffectInstance.GetType(), "LoopTime");
+                    if (_loopTimeField == null)
+                    {
+                        SmartActionLogger.Error("❌ [LoopTime] Could not find LoopTime");
+                        return;
+                    }
                 }
 
                 // Store original value
-                OriginalLoopTime = (float)LoopTimeField.GetValue(medEffectInstance);
+                OriginalLoopTime = (float)_loopTimeField.GetValue(_medEffectInstance);
                 _isInitialized = true;
 
                 SmartActionLogger.Info($"[LoopTime] ✅ Original LoopTime value: {OriginalLoopTime:F2}");
             }
             catch (Exception ex)
             {
-                SmartActionLogger.Error($"[LoopTime] ⚠️ Error during initialization: {ex.Message}");
+                SmartActionLogger.Error($"❌ [LoopTime] Error during initialization: {ex.Message}");
             }
         }
 
@@ -77,45 +81,21 @@ namespace SmartAction.Utils
             {
                 if (!_isInitialized)
                 {
-                    SmartActionLogger.Error("[LoopTime] ⚠️ LoopTime is not initialized.");
+                    SmartActionLogger.Warn("[LoopTime] LoopTime is not initialized.");
                     return;
                 }
 
-                if (LoopTimeField == null)
+                if (_loopTimeField == null || _medEffectInstance == null)
                 {
-                    SmartActionLogger.Error("[LoopTime] ⚠️ LoopTimeField is null.");
+                    SmartActionLogger.Error("❌ [LoopTime] LoopTimeField or MedEffect instance is null.");
                     return;
                 }
 
-                // Re-get instance to ensure no desync
-                var gclass2823Property = AccessTools.Property(typeof(ActiveHealthController.GClass2813), "GClass2823_0");
-                var gclass2823Instance = gclass2823Property.GetValue(null);
-
-                if (gclass2823Instance == null)
-                {
-                    SmartActionLogger.Error("[LoopTime] ⚠️ Could not get instance of GClass2823_0");
-                    return;
-                }
-
-                var medEffectField = AccessTools.Field(gclass2823Instance.GetType(), "MedEffect");
-                if (medEffectField == null)
-                {
-                    SmartActionLogger.Error("[LoopTime] ⚠️ Could not find MedEffect");
-                    return;
-                }
-
-                var medEffectInstance = medEffectField.GetValue(gclass2823Instance);
-                if (medEffectInstance == null)
-                {
-                    SmartActionLogger.Error("[LoopTime] ⚠️ Could not get MedEffect instance");
-                    return;
-                }
-
-                // Apply new loop time
-                LoopTimeField.SetValue(medEffectInstance, newValue);
+                // Apply new loop time directement
+                _loopTimeField.SetValue(_medEffectInstance, newValue);
 
                 // Verification log
-                var afterSet = (float)LoopTimeField.GetValue(medEffectInstance);
+                var afterSet = (float)_loopTimeField.GetValue(_medEffectInstance);
                 if (Math.Abs(afterSet - newValue) < 0.01f)
                 {
                     SmartActionLogger.Log($"[LoopTime] ✅ LoopTime successfully modified: {afterSet:F2}");
@@ -129,6 +109,21 @@ namespace SmartAction.Utils
             catch (Exception ex)
             {
                 SmartActionLogger.Error($"[LoopTime] ⚠️ Unable to update LoopTime: {ex.Message}");
+                
+                _isInitialized = false;
+                try 
+                {
+                    Initialize();
+                    if (_isInitialized)
+                    {
+                        if (_loopTimeField != null) _loopTimeField.SetValue(_medEffectInstance, newValue);
+                        SmartActionLogger.Log($"[LoopTime] ✅ LoopTime successfully modified after reinitialization");
+                    }
+                }
+                catch (Exception reinitEx)
+                {
+                    SmartActionLogger.Error($"[LoopTime] ⚠️ Reinit failed: {reinitEx.Message}");
+                }
             }
         }
 
@@ -140,12 +135,12 @@ namespace SmartAction.Utils
             try
             {
                 SetLoopTime(OriginalLoopTime);
-                SmartActionLogger.Info("[EffectTimeManager] 🔄 LoopTime restored to original value");
+                SmartActionLogger.Info("[LoopTime] 🔄 LoopTime restored to original value");
             }
             catch (Exception ex)
             {
                 SmartActionLogger.Error(
-                    $"[EffectTimeManager] ⚠️ Error while restoring LoopTime: {ex.Message}");
+                    $"[LoopTime] ⚠️ Error while restoring LoopTime: {ex.Message}");
             }
         }
     }

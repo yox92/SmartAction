@@ -15,6 +15,7 @@ public static class PatchMedEffectHooks
         IEffect,
         (EPlayerState movementState, EEffectState effectState)
     > EffectUpdateCache = new();
+
     public static IEffect CurrentHealingEffect;
 
     [HarmonyPatch]
@@ -22,7 +23,9 @@ public static class PatchMedEffectHooks
     {
         private static MethodBase TargetMethod()
         {
-            return ReflectionUtils.GetNestedMethod(typeof(ActiveHealthController), "MedEffect", "Added");
+            var medEffectType = ReflectionUtils.GetOrCacheNestedType(typeof(ActiveHealthController), "MedEffect");
+            var method = ReflectionUtils.GetOrCacheMethod(medEffectType, "Added");
+            return method;
         }
 
         [HarmonyPostfix]
@@ -34,7 +37,7 @@ public static class PatchMedEffectHooks
             if (!isValid)
                 return;
 
-            var float12Field = AccessTools.Field(__instance.GetType(), "float_12");
+            var float12Field = ReflectionUtils.GetOrCacheField(__instance.GetType(), "float_12");
 
             if (__instance is not IEffect effect)
             {
@@ -46,7 +49,7 @@ public static class PatchMedEffectHooks
             EffectUpdateCache[effect] = (EPlayerState.None, EEffectState.None);
             CurrentHealingEffect = effect;
             LoopTime.RestoreOriginalLoopTime();
-            
+
             var key = (medItem, effect.State);
 
             if (float12Field?.GetValue(__instance) is not (float workTime and > 0f and < 20f))
@@ -60,7 +63,6 @@ public static class PatchMedEffectHooks
                                       $" WorkTime = {workTime:F2} for " +
                                       $"{medItem.Template._name} and {effect.State.ToString()}");
             }
-           
         }
 
         [HarmonyPatch]
@@ -68,7 +70,9 @@ public static class PatchMedEffectHooks
         {
             private static MethodBase TargetMethod()
             {
-                return ReflectionUtils.GetNestedMethod(typeof(ActiveHealthController), "MedEffect", "Started");
+                var medEffectType = ReflectionUtils.GetOrCacheNestedType(typeof(ActiveHealthController), "MedEffect");
+                var method = ReflectionUtils.GetOrCacheMethod(medEffectType, "Started");
+                return method;
             }
 
             [HarmonyPostfix]
@@ -90,15 +94,15 @@ public static class PatchMedEffectHooks
                 EffectUpdateCache.Remove(effect);
                 EffectUpdateCache[effect] = (EPlayerState.None, EEffectState.None);
                 CurrentHealingEffect = effect;
-                
+
                 var key = (medItem, effect.State);
 
-                var float12Field = AccessTools.Field(__instance.GetType(), "float_12");
-                var workStateTimeProperty = AccessTools.Property(typeof(ActiveHealthController.GClass2813), "WorkStateTime");
+                var float12Field = ReflectionUtils.GetOrCacheField(__instance.GetType(), "float_12");
+                var workStateTimeProperty = ReflectionUtils.GetOrCacheProperty(typeof(ActiveHealthController.GClass2813), "WorkStateTime");
 
-                if (float12Field?.GetValue(__instance) 
-                        is not (float float12 and > 0f and < 20f) || 
-                    workStateTimeProperty.GetValue(__instance)
+                if (float12Field?.GetValue(__instance)
+                        is not (float float12 and > 0f and < 20f) ||
+                    workStateTimeProperty?.GetValue(__instance)
                         is not (float workStateTime and > 0f and < 20f))
                 {
                     SmartActionLogger.Log($"[MedEffect.Started] Invalid float12 or work time field");
@@ -118,7 +122,10 @@ public static class PatchMedEffectHooks
             {
                 private static MethodBase TargetMethod()
                 {
-                    return ReflectionUtils.GetNestedMethod(typeof(ActiveHealthController), "MedEffect", "Residue");
+                    var medEffectType =
+                        ReflectionUtils.GetOrCacheNestedType(typeof(ActiveHealthController), "MedEffect");
+                    var method = ReflectionUtils.GetOrCacheMethod(medEffectType, "Residue");
+                    return method;
                 }
 
                 [HarmonyPostfix]
@@ -153,7 +160,9 @@ public static class PatchMedEffectHooks
             // {
             //     private static MethodBase TargetMethod()
             //     {
-            //         return ReflectionUtils.GetNestedMethod(typeof(ActiveHealthController), "MedEffect", "Removed");
+            //         return ReflectionUtils.GetOrCacheMethod(
+            //             ReflectionUtils.GetOrCacheNestedType(typeof(ActiveHealthController), "MedEffect"),
+            //             "Removed");
             //     }
             //
             //     [HarmonyPrefix]

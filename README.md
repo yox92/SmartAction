@@ -18,11 +18,11 @@ SmartAction is a mod for Escape from Tarkov SPT-AKI. It enhances the medical gam
 
 ## ⚙️ Configuration
 
-| Setting       | Default | Description                                                              |
-| ------------- |---------| ------------------------------------------------------------------------ |
-| `IdleSpeed`   | **15**  | Healing & animation speed multiplier when standing still (10 = vanilla). |
-| `WalkSpeed`   | **10**  | Multiplier when walking / moving normally.                               |
-| `SprintSpeed` | **9**   | Multiplier when sprinting.                                               |
+| Setting       | Default | Description                                                                  |
+| ------------- |---------|------------------------------------------------------------------------------|
+| `IdleSpeed`   | **15**  | x1.5 No move   when healing food/drink speed multiplier when standing still. |
+| `WalkSpeed`   | **10**  | when walking (10 = vanilla)                                                  |
+| `SprintSpeed` | **9**   | x0.9 when sprinting.                                                         |
 
 Edit them in‑game (F12 ➜ SmartAction) or tweak the `.cfg` file while the game is closed.
 

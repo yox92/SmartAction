@@ -1,4 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Reflection;
 using EFT;
 using EFT.HealthSystem;
 using EFT.InventoryLogic;
@@ -138,7 +141,7 @@ namespace SmartAction.Patch
             var type = effect.GetType();
             while (type != null)
             {
-                var workTimeField = ReflectionUtils.FindField(type, "float_12");
+                var workTimeField = ReflectionUtils.GetOrCacheField(type, "float_12");
                 if (workTimeField != null)
                 {
                     workTimeField.SetValue(effect, 0f);
