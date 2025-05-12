@@ -26,8 +26,6 @@ SmartAction is a mod for EFT SPT. It enhances the medical gameplay loop by makin
 
 Edit them in‑game (F12 ➜ SmartAction) or tweak the `.cfg` file while the game is closed.
 
-> **Tip:** Extreme values may break animation sync – keep them reasonable.
-
 ---
 ## 🎮 In‑game usage
 
