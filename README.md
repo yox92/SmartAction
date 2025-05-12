@@ -37,6 +37,6 @@ Edit them in‑game (F12 ➜ SmartAction) or tweak the `.cfg` file while the gam
     2. Within **0.2 s** double‑right‑click.
     3. The animation stops, and the kit is dropped in front of you.
 
-A detailed log is printed to the BepInEx console/log file under the `SmartAction` tag.
+A detailed log is printed to `SmartAction_log.txt` when cfg true.
 
 ---
