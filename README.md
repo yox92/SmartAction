@@ -1,4 +1,4 @@
-# SmartAction – Adaptive Healing/Food/Drink & Surgery QoL mod for SPT‑AKI
+# SmartAction – Adaptive Healing/Food/Drink & Surgery QoL mod for SPT
 
 ## Description
 SmartAction is a mod for EFT SPT. It enhances the medical gameplay loop by making the healing, surgery, and food drink smarter and faster. It allows you to adjust the speed of medical items, surgeries, food, and water consumption based on your current movement state (Idle / Walk / Sprint).
