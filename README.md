@@ -1,7 +1,7 @@
-# SmartAction – Adaptive Healing & Surgery QoL mod for SPT‑AKI
+# SmartAction – Adaptive Healing/Food/Drink & Surgery QoL mod for SPT‑AKI
 
 ## Description
-SmartAction is a mod for Escape from Tarkov SPT-AKI. It enhances the medical gameplay loop by making the healing, surgery, and food drink smarter and faster. It allows you to adjust the speed of medical items, surgeries, food, and water consumption based on your current movement state (Idle / Walk / Sprint).
+SmartAction is a mod for EFT SPT. It enhances the medical gameplay loop by making the healing, surgery, and food drink smarter and faster. It allows you to adjust the speed of medical items, surgeries, food, and water consumption based on your current movement state (Idle / Walk / Sprint).
 
 ---
 
@@ -35,7 +35,7 @@ Edit them in‑game (F12 ➜ SmartAction) or tweak the `.cfg` file while the gam
 * **Cancel surgery**:
     1. Start a CMS or Surv12 action.
     2. Within **0.2 s** double‑right‑click.
-    3. The animation stops, the effect finalises, and the kit is dropped in front of you.
+    3. The animation stops, and the kit is dropped in front of you.
 
 A detailed log is printed to the BepInEx console/log file under the `SmartAction` tag.
 
